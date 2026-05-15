@@ -67,10 +67,13 @@
     <style type="text/tailwindcss">
         @layer utilities {
             .text-gradient-gold {
-                @apply bg-clip-text text-transparent bg-gradient-to-r from-gold via-gold-light to-gold-dark;
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                background-image: linear-gradient(to right, #bf953f, #fcf6ba, #aa771c);
             }
             .gradient-gold {
-                @apply bg-gradient-to-r from-gold via-gold-light to-gold-dark;
+                background-image: linear-gradient(to right, #bf953f, #fcf6ba, #aa771c);
             }
             .animate-fade-up-delay {
                 animation: fadeUp 0.8s ease-out 0.2s forwards;
@@ -87,7 +90,9 @@
         }
 
         body {
-            @apply font-sans bg-background text-foreground;
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #1c1917;
         }
 
         .hero-overlay {
