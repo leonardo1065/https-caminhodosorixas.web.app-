@@ -157,6 +157,7 @@ const SITE_DATA = {
     contato: {
         whatsapp: "5511976743235", // Apenas números com código do país e DDD
         whatsappDisplay: "(11) 97674-3235",
+        email: "caminhodosorixas2026@gmail.com",
         endereco: "Rua Sérgio Cardoso, 506 — Jd. Sto Estefano, São Paulo/SP",
         instagram: "caminhodosorixass",
         mapsLink: "https://www.google.com/maps/search/?api=1&query=-23.627500,-46.625100" // Link com coordenadas para maior precisão
