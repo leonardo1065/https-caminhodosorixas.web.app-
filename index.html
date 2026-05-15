@@ -218,17 +218,17 @@
                     <form id="feedbackForm" onsubmit="event.preventDefault(); enviarMensagem();">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                             <div>
-                                <label class="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-wide">Seu Nome</label>
+                                <label for="fb-nome" class="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-wide">Seu Nome</label>
                                 <input type="text" id="fb-nome" required class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Como podemos te chamar?">
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-wide">WhatsApp / Telefone</label>
+                                <label for="fb-fone" class="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-wide">WhatsApp / Telefone</label>
                                 <input type="text" id="fb-fone" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="(00) 00000-0000">
                             </div>
                         </div>
                         
                         <div class="mb-6">
-                            <label class="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-wide">Assunto</label>
+                            <label for="fb-assunto" class="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-wide">Assunto</label>
                             <select id="fb-assunto" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all appearance-none bg-white">
                                 <option value="Dúvida / Informações">Dúvida / Mais Informações</option>
                                 <option value="Sugestão">Sugestão</option>
@@ -238,7 +238,7 @@
                         </div>
                         
                         <div class="mb-8">
-                            <label class="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-wide">Sua Mensagem</label>
+                            <label for="fb-mensagem" class="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-wide">Sua Mensagem</label>
                             <textarea id="fb-mensagem" required rows="4" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all" placeholder="Escreva aqui sua dúvida, sugestão ou elogio..."></textarea>
                         </div>
                         
@@ -417,11 +417,14 @@
             historiaTexto.innerHTML = SITE_DATA.historia.texto.map(p => `<p>${p}</p>`).join('');
         }
 
-        // Menu Mobile (Simple Toggle)
+        // Menu Mobile
         const menuToggle = document.getElementById('menu-toggle');
-        menuToggle.addEventListener('click', () => {
-            alert('Menu mobile pode ser implementado aqui ou use âncoras diretas.');
-        });
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                const nav = document.querySelector('nav');
+                if (nav) nav.classList.toggle('hidden');
+            });
+        }
 
         // --- LÓGICA DO CONTADOR DE VISITAS FIREBASE ---
         (function() {
