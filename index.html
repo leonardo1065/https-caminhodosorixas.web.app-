@@ -261,7 +261,7 @@
                 <h2 class="font-heading text-4xl sm:text-6xl font-bold mb-8">Venha nos <span class="text-gold">visitar</span></h2>
                 <p class="text-white/80 mb-12 text-lg sm:text-xl max-w-xl mx-auto">Nossas portas estão abertas para todos que buscam luz, caridade e paz espiritual. Saravá!</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <a href="#" id="cta-email-link" class="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-white px-10 py-4 text-sm font-bold text-earth hover:scale-105 transition-all">Falar por E-mail</a>
+                    <a href="#" id="cta-whatsapp-link" class="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-white px-10 py-4 text-sm font-bold text-earth hover:scale-105 transition-all gap-2"><i class="fab fa-whatsapp text-emerald-600 text-lg"></i> Falar no WhatsApp</a>
                     <a href="https://maps.google.com/?q=Rua+Sérgio+Cardoso,+506+São+Paulo" id="cta-maps-link" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center rounded-full border border-white/30 px-10 py-4 text-sm font-bold hover:bg-white/10 transition-all">Ver Localização</a>
                 </div>
             </div>
@@ -299,7 +299,7 @@
                     </li>
                     <li class="flex items-center gap-3">
                         <span class="text-gold">📞</span>
-                        <span id="footer-whatsapp">Carregando WhatsApp...</span>
+                        <a href="#" id="footer-whatsapp-link" class="hover:text-gold underline">Carregando WhatsApp...</a>
                     </li>
                     <li class="flex items-center gap-3">
                         <span class="text-gold">✉️</span>
@@ -481,9 +481,8 @@
 
             window.addEventListener('load', registrarVisita);
 
-            // FUNÇÃO PARA ENVIAR MENSAGEM DE FEEDBACK E REDIRECIONAR PARA E-MAIL
-            window.enviarMensagem = async function() {
-                const btn = document.getElementById('btnEnviarMsg');
+            // FUNÇÃO PARA ENVIAR MENSAGEM E ABRIR WHATSAPP INSTANTANEAMENTE (IDÊNTICO À OFICINAPRO)
+            window.enviarMensagem = function() {
                 const nome = document.getElementById('fb-nome').value.trim();
                 const fone = document.getElementById('fb-fone').value.trim();
                 const assunto = document.getElementById('fb-assunto').value;
@@ -494,64 +493,35 @@
                     return;
                 }
 
-                btn.disabled = true;
-                const originalBtnText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ENVIANDO...';
+                // 1. Cria mensagem formatada para o WhatsApp
+                let msg = `🕊️ *NOVO CONTATO - SITE CAMINHO DOS ORIXÁS*\n\n`;
+                msg += `👤 *Nome:* ${nome}\n`;
+                msg += `📞 *WhatsApp:* ${fone || 'Não informado'}\n`;
+                msg += `⚖️ *Assunto:* ${assunto}\n\n`;
+                msg += `📝 *Mensagem:*\n${mensagem}\n\n`;
+                msg += `_Enviado de forma segura via site do terreiro._`;
 
-                try {
-                    // 1. Salva no Firebase (Painel Administrativo)
-                    await db.collection('site_contatos').add({
-                        nome,
-                        fone,
-                        assunto,
-                        mensagem,
-                        data: firebase.firestore.FieldValue.serverTimestamp(),
-                        status: 'novo'
-                    });
+                const numeroZap = SITE_DATA.contato.whatsapp;
+                const url = `https://api.whatsapp.com/send?phone=${numeroZap}&text=${encodeURIComponent(msg)}`;
 
-                    // 2. Envia também por E-mail de forma automática (via FormSubmit AJAX)
-                    try {
-                        const formData = new FormData();
-                        formData.append("Nome", nome);
-                        formData.append("Telefone", fone);
-                        formData.append("Assunto", assunto);
-                        formData.append("Mensagem", mensagem);
-                        formData.append("_subject", `Novo Contato do Site: ${assunto}`);
-                        formData.append("_captcha", "false");
-                        formData.append("_template", "table");
+                // 2. ABRE O WHATSAPP IMEDIATAMENTE (Totalmente síncrono no primeiro frame do clique!)
+                // Isso garante compatibilidade total e instantânea de redirecionamento em celulares!
+                window.open(url, '_blank');
 
-                        const response = await fetch("https://formsubmit.co/ajax/caminhodosorixas2026@gmail.com", {
-                            method: "POST",
-                            body: formData
-                        });
-                        
-                        if (!response.ok) throw new Error("Erro no serviço de e-mail");
-                        
-                    } catch (e) {
-                        console.warn("Aviso: A mensagem foi salva no banco, mas a notificação por e-mail pode ter falhado.", e);
-                    }
+                // 3. Salva no Firebase em segundo plano para controle administrativo
+                db.collection('site_contatos').add({
+                    nome,
+                    fone,
+                    assunto,
+                    mensagem,
+                    data: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'novo'
+                }).catch(error => {
+                    console.error("Erro ao registrar no Firebase:", error);
+                });
 
-                    // 3. Mostra sucesso
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Mensagem Enviada!',
-                        text: 'Sua mensagem foi recebida. Se for sua primeira vez, verifique seu e-mail em instantes para ativar as notificações.',
-                        confirmButtonText: 'OK',
-                        confirmButtonColor: '#bf953f',
-                        timer: 5000,
-                        timerProgressBar: true,
-                        willClose: () => {
-                            document.getElementById('feedbackForm').reset();
-                        }
-                    });
-
-                } catch (error) {
-                    console.error("Erro ao enviar mensagem:", error);
-                    Swal.fire('Erro', 'Não foi possível enviar sua mensagem agora. Tente novamente mais tarde.', 'error');
-                } finally {
-                    btn.disabled = false;
-                    btn.innerHTML = originalBtnText;
-                }
+                // 4. Limpa o formulário imediatamente
+                document.getElementById('feedbackForm').reset();
             };
 
             // INICIALIZAÇÃO DE DADOS DE CONTATO
@@ -569,15 +539,20 @@
                     // Atualiza links de WhatsApp (se ainda houver algum)
                     const zapLinks = document.querySelectorAll('[id*="whatsapp-link"]');
                     zapLinks.forEach(link => {
-                        link.href = `https://wa.me/${c.whatsapp}`;
+                        link.href = `https://api.whatsapp.com/send?phone=${c.whatsapp}`;
+                        link.target = "_blank";
                     });
                     
                     // Atualiza textos no rodapé
                     const footerEnd = document.getElementById('footer-endereco');
                     if (footerEnd) footerEnd.innerText = c.endereco;
                     
-                    const footerZap = document.getElementById('footer-whatsapp');
-                    if (footerZap) footerZap.innerText = c.whatsappDisplay;
+                    const footerZap = document.getElementById('footer-whatsapp-link');
+                    if (footerZap) {
+                        footerZap.href = `https://api.whatsapp.com/send?phone=${c.whatsapp}`;
+                        footerZap.target = "_blank";
+                        footerZap.innerText = c.whatsappDisplay;
+                    }
 
                     const footerEmail = document.getElementById('footer-email-link');
                     if (footerEmail) {

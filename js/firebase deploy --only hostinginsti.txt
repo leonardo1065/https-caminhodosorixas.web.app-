@@ -1,0 +1,65 @@
+# Manual do Template - Cadastro Geral 🚀
+
+Este documento resume todas as funcionalidades e configurações do seu novo template white-label.
+
+---
+
+## 1. Configuração Principal (`js/config.js`)
+Toda a personalização do sistema é feita neste arquivo.
+
+### Dados da Empresa
+```javascript
+companyName: "NOME DA SUA EMPRESA",
+address: "Endereço Completo, 123",
+phone: "(00) 00000-0000",
+cnpj: "00.000.000/0001-00",
+logoUrl: "img/logo.png",
+```
+
+### Acesso e Login
+*   `loginUser`: Nome de usuário padrão (Ex: "admin").
+*   `loginPass`: Senha inicial padrão (Ex: "1234").
+*   **Nota**: O sistema salva a senha no navegador após o primeiro acesso. Se esquecer, use o botão "Reset" na tela de login.
+
+---
+
+## 2. Sistema de Trava de Teste (Trial) ⏳
+O sistema possui uma trava automática para períodos de demonstração.
+
+*   **Configuração**: No `config.js`, altere `trialDays` (Ex: `1` para um dia de teste). Use `0` para desativar a trava.
+*   **Como Funciona**: O contador começa a valer na primeira vez que o sistema é aberto no navegador do cliente.
+*   **Bloqueio**: Após o prazo, o sistema exibe uma tela vermelha pedindo uma **Chave de Autorização**.
+
+### Como Gerar a Chave de Ativação:
+Você tem duas formas de liberar o sistema para o seu cliente:
+1.  **Chave Mestra Universal**: Digite `ADMIN99`.
+2.  **Chave por Aparelho**: Peça o "ID do Aparelho" que aparece na tela de bloqueio do cliente. A chave será: `ID_DO_APARELHO + MASTER`.
+    *   *Exemplo*: Se o ID for `XYZ123`, a chave é `XYZ123MASTER`.
+
+---
+
+## 3. Identidade Visual (Cores) 🎨
+As cores principais estão centralizadas no arquivo `css/style.css`. Atualmente o sistema está configurado com um **tema Marrom Profissional**.
+
+*   `--primary-color`: Cor principal (Botões, Cabeçalhos).
+*   `--primary-dark`: Cor para estados de clique e destaque.
+*   `--secondary-color`: Cores de apoio.
+
+---
+
+## 4. Módulos Adicionais (Ativar/Desativar) 🧩
+No `config.js`, você pode esconder ou mostrar abas específicas:
+*   `showTrabalhos`: Ativa aba de Agendamentos.
+*   `showOrixas`: Ativa aba de Galeria/Categorias.
+*   `trabalhosTitle` / `orixasTitle`: Permite mudar o nome que aparece na aba.
+
+---
+
+## 5. Dicas de Manutenção
+*   **Backup**: Sempre recomende ao usuário fazer o backup na aba de Relatórios.
+*   **Limpeza**: Se o sistema estiver estranho, clique em **"Atualizar Versão"** no cabeçalho para limpar o cache do navegador.
+*   **IDs**: Se os códigos de barras pararem de funcionar, use as ferramentas de sincronização em **"Configs"**.
+
+---
+*Documentação gerada em 2026*
+

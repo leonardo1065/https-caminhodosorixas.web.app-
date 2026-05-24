@@ -9,9 +9,9 @@ const SITE_DATA = {
     // Configuração das Giras (Exibidas na seção "Próximas Giras")
     giras: [
         { 
-            dia: "Segunda-feira dia 18/05", 
+            dia: "Segunda-feira dia 25/05", 
             hora: "20:00", 
-            titulo: "Gira de Baianos, Salve os Baianos", 
+            titulo: "Gira de Exús Pombagiras e Mirins,Laroyê", 
             icone: "🕯️",
             cor: "" 
         },
@@ -155,8 +155,8 @@ const SITE_DATA = {
     
     // Configurações de Contato
     contato: {
-        whatsapp: "5511976743235", // Apenas números com código do país e DDD
-        whatsappDisplay: "(11) 97674-3235",
+        whatsapp: "551125911667", // Apenas números com código do país e DDD
+        whatsappDisplay: "(11) 2591-1667",
         email: "caminhodosorixas2026@gmail.com",
         endereco: "Rua Sérgio Cardoso, 506 — Jd. Sto Estefano, São Paulo/SP",
         instagram: "caminhodosorixass",
